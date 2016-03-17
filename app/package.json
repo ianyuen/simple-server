@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "^4.13.4",
     "jade": "^1.11.0",
-    "mongodb": "^2.1.7"
+    "mongodb": "^2.1.7",
+    "mongoose": "^4.4.7"
   }
 }
