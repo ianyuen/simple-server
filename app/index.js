@@ -38,3 +38,22 @@ var kittySchema = mongoose.Schema({
 var Kitten = mongoose.model('Kitten', kittySchema);
 var silence = new Kitten({ name: 'Silence' });
 console.log(silence.name);
+
+kittySchema.methods.speak = function () {
+	var greeting = this.name ? "Meow name is " + this.name : "I don't have a name";
+	console.log(greeting);
+}
+
+var Kitten = mongoose.model('Kitten', kittySchema);
+
+var fluffy = new Kitten({ name: 'fluffy' });
+fluffy.save(function (err, fluffy) {
+	if (err)
+		return console.error(err);
+});
+
+Kitten.find(function (err, kittens) {
+	if (err)
+		return console.error(err);
+	console.log(kittens);
+})
