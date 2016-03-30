@@ -7,16 +7,15 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(function(req, res) {
-	res.render('404', { url: req.url });
-});
-
 app.get('/', function(req, res) {
 	res.send('<html><body><h1>Hello World</h1></body></html>');
 });
 app.get('/:a?/:b?/:c?', function(req, res) {
 	res.send(req.params.a + ' ' + req.params.b + ' ' + req.params.c);
+});
+
+app.post('/:a?/:b?/:c?', function(req, res) {
+	log.print(req.params.a + ' ' + req.params.b + ' ' + req.params.c);
 });
 
 http.createServer(app).listen(app.get('port'), function() {
@@ -66,13 +65,6 @@ var insertDocument = function(db, callback) {
 	});
 };
 
-MongoClient.connect(url, function(err, db) {
-	assert.equal(null, err);
-	insertDocument(db, function() {
-		db.close();
-	});
-});
-
 var findRestaurants = function(db, callback) {
 	var cursor =db.collection('restaurants').find( { "borough": "Manhattan" } );
 	cursor.each(function(err, doc) {
@@ -84,10 +76,3 @@ var findRestaurants = function(db, callback) {
 		}
 	});
 };
-
-MongoClient.connect(url, function(err, db) {
-	assert.equal(null, err);
-	findRestaurants(db, function() {
-		db.close();
-	});
-});
