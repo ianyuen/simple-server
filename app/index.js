@@ -74,7 +74,7 @@ MongoClient.connect(url, function(err, db) {
 });
 
 var findRestaurants = function(db, callback) {
-	var cursor =db.collection('restaurants').find( );
+	var cursor =db.collection('restaurants').find( { "borough": "Manhattan" } );
 	cursor.each(function(err, doc) {
 		assert.equal(err, null);
 		if (doc != null) {
