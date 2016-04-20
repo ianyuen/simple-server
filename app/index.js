@@ -1,4 +1,6 @@
 var log = require('./log.js');
+var database = require('./database.js')
+
 var http = require('http');
 var path = require('path');
 var express = require('express');
@@ -24,15 +26,17 @@ app.get('/:a?/:b?/:c?', function(req, res) {
 app.post('/', function(req, res) {
 	var action = req.body.action;
 	if (action == "signup") {
-		signup(req.body.username, req.body.password);
+		var username = req.body.username;
+		var password = req.body.password;
+		insertUser(username, password, function(response) {
+			res.send(response);
+		});
 	}
 });
 
-function signup(username, password) {
-	var database = require('./database.js')
-	database.insertUser(username, password);
+function signUp(username, password) {
 }
 
 http.createServer(app).listen(app.get('port'), function() {
-	console.log('Express server listening on port ' + app.get('port'));
+	printLog('Express server listening on port ' + app.get('port'));
 });

@@ -1,22 +1,8 @@
+var log = require('./log.js');
+
 var url = 'mongodb://localhost:27017/WorkoutSolution';
 var assert = require('assert');
 var mongoClient = require('mongodb').MongoClient;
-
-mongoClient.connect(url, function(err, db) {
-	assert.equal(null, err);
-	db.close();
-});
-
-var insertDocument = function(db, username, password, callback) {
-	db.collection('users').insertOne( {
-		"username" : username,
-		"password" : password
-	}, function(err, result) {
-		assert.equal(err, null);
-		callback();
-		console.log("Inserted " + username + " to database");
-	});
-};
 
 var findRestaurants = function(db, callback) {
 	var cursor = db.collection('restaurants').find( { "borough": "Manhattan" } );
@@ -30,13 +16,15 @@ var findRestaurants = function(db, callback) {
 	});
 };
 
-module.exports = {
-	insertUser: function (username, password) {
-		mongoClient.connect(url, function(err, db) {
-			assert.equal(null, err);
-			insertDocument(db, username, password, function() {
-				db.close();
-			});
+insertUser = function(username, password, callback) {
+	var response = "";
+	mongoClient.connect(url, function(err, db) {
+		db.collection("user").insertOne({
+			"username" : username,
+			"password" : password
+		}, function (error, result) {
+			printLog("result: " + result);
+			callback(result);
 		});
-	}
-};
+	});
+}

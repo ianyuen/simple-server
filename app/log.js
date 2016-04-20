@@ -22,8 +22,6 @@ Object.defineProperty(global, '__file', {
 	}
 });
 
-module.exports = {
-	print: function (message) {
-		console.log(__file + " line " + __line + ": " + message);
-	}
-};
+printLog = function (message) {
+	console.log(__file + " line " + __line + ": " + message);
+}
