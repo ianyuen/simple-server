@@ -7,7 +7,7 @@ var mongoClient = require('mongodb').MongoClient;
 insertUser = function(username, password, callback) {
 	mongoClient.connect(url, function(err, db) {
 		db.collection("user").insertOne({
-			"username" : username,
+			"_id" : username,
 			"password" : password
 		}, function (error, result) {
 			callback(result);
@@ -18,7 +18,7 @@ insertUser = function(username, password, callback) {
 verifyUser = function(username, password, callback) {
 	mongoClient.connect(url, function(err, db) {
 		var cursor = db.collection('user').find({
-			"username" : username,
+			"_id" : username,
 			"password" : password
 		});
 
