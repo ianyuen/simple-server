@@ -25,17 +25,29 @@ app.get('/:a?/:b?/:c?', function(req, res) {
 
 app.post('/', function(req, res) {
 	var action = req.body.action;
-	if (action == "signup") {
+	if (action == "signUp") {
 		var username = req.body.username;
 		var password = req.body.password;
 		insertUser(username, password, function(response) {
 			res.send(response);
 		});
+	} else if (action == "signIn") {
+		var counter = 0;
+		var username = req.body.username;
+		var password = req.body.password;
+		verifyUser(username, password, function(response) {
+			if (response == "canResponse") {
+				if (counter > 0) {
+					res.send(true);
+				} else {
+					res.send(false);
+				}
+			} else {
+				counter = response;
+			}
+		});
 	}
 });
-
-function signUp(username, password) {
-}
 
 http.createServer(app).listen(app.get('port'), function() {
 	printLog('Express server listening on port ' + app.get('port'));
